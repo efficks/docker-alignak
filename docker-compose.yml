@@ -1,0 +1,17 @@
+version: "2"
+services:
+  alignak-arbiter:
+    image: alignak-arbiter
+    container_name: alignak-arbiter
+    hostname: arbiter-master
+    depends_on:
+      - alignak-scheduler
+    volumes:
+      - /opt/alignak:/usr/local/etc/alignak
+
+  alignak-scheduler:
+    image: alignak-scheduler
+    container_name: alignak-scheduler
+    hostname: scheduler-master
+    volumes:
+      - /opt/alignak:/usr/local/etc/alignak

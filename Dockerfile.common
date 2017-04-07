@@ -1,0 +1,27 @@
+FROM python:2.7-alpine
+
+RUN adduser -S -H -D alignak
+RUN apk add --no-cache alpine-sdk python-dev git
+
+RUN cd /tmp && \
+    git clone https://github.com/Alignak-monitoring/alignak.git alignak
+RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
+RUN cd /tmp/alignak && \
+    apk add --no-cache libffi-dev openssl-dev && \
+    pip install .
+#    pip install 'CherryPy<9.0.0' --force-reinstall
+
+
+RUN apk del alpine-sdk git && \
+    rm -vrf /tmp/alignak
+
+USER alignak
+
+ENV var /usr/local/var/libexec/alignak
+ENV bin /usr/local/bin
+ENV etc /usr/local/etc/alignak
+ENV alignakcfg $etc/alignak.cfg
+
+#RUN sed -i -e 's/daemon_enabled=1/daemon_enabled=0/g' /usr/local/etc/alignak/daemons/arbiterd.ini
+
+STOPSIGNAL TERM

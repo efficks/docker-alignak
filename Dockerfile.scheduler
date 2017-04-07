@@ -1,0 +1,6 @@
+include(`Dockerfile.common')
+
+WORKDIR $var
+
+CMD $bin/alignak-scheduler -c "/usr/local/etc/alignak/daemons/schedulerd.ini"
+EXPOSE 7768
