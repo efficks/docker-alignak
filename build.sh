@@ -1,10 +1,26 @@
 #!/usr/bin/env bash
+set -e
+set -x
 
-for MODULE in arbiter scheduler broker poller reactionner receiver
+rm -rf build
+
+declare -A MODULES
+MODULES["arbiter"]="7770"
+MODULES["broker"]="7772"
+MODULES["poller"]="7771"
+MODULES["reactionner"]="7769"
+MODULES["receiver"]="7773"
+MODULES["scheduler"]="7768"
+
+for MODULE in "${!MODULES[@]}"
 do
 	mkdir -p build/$MODULE
-	m4 Dockerfile.$MODULE > build/$MODULE/Dockerfile
-
+if [ "$MODULE" == "arbiter" ]
+then
+	m4 -D MODULENAME=$MODULE -D MODULEPORT=${MODULES[$MODULE]} Dockerfile.$MODULE > build/$MODULE/Dockerfile
+else
+	m4 -D MODULENAME=$MODULE -D MODULEPORT=${MODULES[$MODULE]} Dockerfile.other > build/$MODULE/Dockerfile
+fi
 	cd build/$MODULE;
 	docker build -t alignak-$MODULE .
 	cd -

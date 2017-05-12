@@ -1,0 +1,5 @@
+include(`Dockerfile.common')
+
+WORKDIR $var
+
+CMD $bin/alignak-MODULENAME -c "/usr/local/etc/alignak/daemons/MODULENAME`'d.ini"

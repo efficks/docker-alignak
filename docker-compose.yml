@@ -6,8 +6,14 @@ services:
     hostname: arbiter-master
     depends_on:
       - alignak-scheduler
+      - alignak-reactionner
+      - alignak-poller
+      - alignak-receiver
+      - alignak-broker
     volumes:
       - /opt/alignak:/usr/local/etc/alignak
+      - /usr/local/lib/python2.7/site-packages/alignak
+      - /opt/alignak-logs:/usr/local/var/log/alignak
 
   alignak-scheduler:
     image: alignak-scheduler
@@ -15,3 +21,44 @@ services:
     hostname: scheduler-master
     volumes:
       - /opt/alignak:/usr/local/etc/alignak
+      - /opt/alignak-logs:/usr/local/var/log/alignak
+
+  alignak-reactionner:
+    image: alignak-reactionner
+    container_name: alignak-reactionner
+    hostname: reactionner-master
+    depends_on:
+      - alignak-scheduler
+    volumes:
+      - /opt/alignak:/usr/local/etc/alignak
+      - /opt/alignak-logs:/usr/local/var/log/alignak
+
+  alignak-broker:
+    image: alignak-broker
+    container_name: alignak-broker
+    hostname: broker-master
+    depends_on:
+      - alignak-scheduler
+    volumes:
+      - /opt/alignak:/usr/local/etc/alignak
+      - /opt/alignak-logs:/usr/local/var/log/alignak
+
+  alignak-receiver:
+    image: alignak-receiver
+    container_name: alignak-receiver
+    hostname: receiver-master
+    depends_on:
+      - alignak-scheduler
+    volumes:
+      - /opt/alignak:/usr/local/etc/alignak
+      - /opt/alignak-logs:/usr/local/var/log/alignak
+
+  alignak-poller:
+    image: alignak-poller
+    container_name: alignak-poller
+    hostname: poller-master
+    depends_on:
+      - alignak-scheduler
+    volumes:
+      - /opt/alignak:/usr/local/etc/alignak
+      - /opt/alignak-logs:/usr/local/var/log/alignak
