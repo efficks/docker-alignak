@@ -17,6 +17,7 @@ RUN    chown -R alignak /usr/local/var/libexec/alignak && \
     chown -R alignak /usr/local/etc/alignak
     
 #    pip install 'CherryPy<9.0.0' --force-reinstall
+RUN pip install alignak-module-backend
 
 RUN apk del alpine-sdk git && \
     rm -vrf /tmp/alignak

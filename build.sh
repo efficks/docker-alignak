@@ -25,3 +25,10 @@ fi
 	docker build -t alignak-$MODULE .
 	cd -
 done
+
+mkdir -p build/backend
+cp Dockerfile.backend build/backend/Dockerfile
+cp alignakbackend.py build/backend
+cd build/backend
+docker build -t alignak-backend .
+cd -
