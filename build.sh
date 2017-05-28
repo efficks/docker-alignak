@@ -22,7 +22,7 @@ else
 	m4 -D MODULENAME=$MODULE -D MODULEPORT=${MODULES[$MODULE]} Dockerfile.other > build/$MODULE/Dockerfile
 fi
 	cd build/$MODULE;
-	docker build -t alignak-$MODULE .
+	docker build --network=host -t alignak-$MODULE .
 	cd -
 done
 
