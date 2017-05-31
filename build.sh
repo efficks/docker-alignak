@@ -30,5 +30,5 @@ mkdir -p build/backend
 cp Dockerfile.backend build/backend/Dockerfile
 cp alignakbackend.py build/backend
 cd build/backend
-docker build -t alignak-backend .
+docker build --network=host -t alignak-backend .
 cd -

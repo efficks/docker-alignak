@@ -62,3 +62,18 @@ services:
     volumes:
       - /opt/alignak:/usr/local/etc/alignak
       - /opt/alignak-logs:/usr/local/var/log/alignak
+
+  alignak-backend:
+    container_name: alignak-backend
+    image: alignak-backend
+    hostname: alignak-backend
+    depends_on:
+      - mongo
+      - alignak-arbiter
+    volumes:
+      - /opt/alignak/backend/settings.json:/usr/local/etc/alignak-backend/settings.json
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    hostname: mongo

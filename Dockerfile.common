@@ -22,6 +22,8 @@ RUN pip install alignak-module-backend
 RUN apk del alpine-sdk git && \
     rm -vrf /tmp/alignak
 
+RUN pip uninstall -y ujson
+
 USER alignak
 
 ENV var /usr/local/var/libexec/alignak
@@ -29,7 +31,6 @@ ENV bin /usr/local/bin
 ENV etc /usr/local/etc/alignak
 ENV alignakcfg $etc/alignak.cfg
 
-RUN pip uninstall -y ujson
 WORKDIR /usr/local/etc/alignak
 #RUN sed -i -e 's/daemon_enabled=1/daemon_enabled=0/g' /usr/local/etc/alignak/daemons/arbiterd.ini
 

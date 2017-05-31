@@ -3,6 +3,9 @@ FROM python:2.7-alpine
 RUN apk add --update-cache build-base linux-headers
 RUN pip install alignak-backend
 RUN apk del build-base linux-headers
+RUN adduser -S -H -D alignak
+
+USER alignak
 
 COPY alignakbackend.py alignakbackend.py
 ENTRYPOINT ["uwsgi", "-s", "/tmp/uwsgi.sock", "-w", "alignakbackend:app", "--enable-threads", "-p", "4"]
