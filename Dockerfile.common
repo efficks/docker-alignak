@@ -14,16 +14,18 @@ RUN cd /tmp/alignak && \
     pip install .
 RUN    chown -R alignak /usr/local/var/libexec/alignak && \
     chown -R alignak /usr/local/var/run/alignak && \
-    chown -R alignak /usr/local/etc/alignak
+    chown -R alignak /usr/local/etc/alignak && \
+    chown -R alignak /usr/local/var/log/alignak
     
 #    pip install 'CherryPy<9.0.0' --force-reinstall
+{% if MODULENAME in ['arbiter', 'broker', 'scheduler'] %}
 RUN pip install alignak-module-backend
+{% endif %}
 
 RUN apk del alpine-sdk git && \
     rm -vrf /tmp/alignak
 
 RUN pip uninstall -y ujson
-
 USER alignak
 
 ENV var /usr/local/var/libexec/alignak
@@ -35,4 +37,12 @@ WORKDIR /usr/local/etc/alignak
 #RUN sed -i -e 's/daemon_enabled=1/daemon_enabled=0/g' /usr/local/etc/alignak/daemons/arbiterd.ini
 
 STOPSIGNAL TERM
-EXPOSE MODULEPORT
+EXPOSE {{ ports[MODULENAME] }}
+
+WORKDIR $var
+
+{% if MODULENAME=='arbiter' %}
+CMD $bin/alignak-arbiter -a "$alignakcfg" -c "/usr/local/etc/alignak/daemons/arbiterd.ini"
+{% else %}
+CMD $bin/alignak-{{ MODULENAME }} -c "/usr/local/etc/alignak/daemons/{{ MODULENAME }}d.ini"
+{% endif %}

@@ -1,0 +1,12 @@
+FROM python:2.7-alpine
+
+RUN apk add --update-cache build-base linux-headers
+RUN pip install alignak-webui alignak-backend && \
+    adduser -S -H -D alignak
+RUN apk del build-base linux-headers
+
+USER alignak
+
+#COPY alignakbackend.py alignakbackend.py
+STOPSIGNAL TERM
+ENTRYPOINT ["alignak-webui-uwsgi"]

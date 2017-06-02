@@ -1,5 +1,0 @@
-include(`Dockerfile.common')
-
-WORKDIR $var
-
-CMD $bin/alignak-arbiter -a "$alignakcfg" -c "/usr/local/etc/alignak/daemons/arbiterd.ini"

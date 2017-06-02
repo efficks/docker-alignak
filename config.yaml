@@ -1,0 +1,7 @@
+ports:
+  arbiter: 7770
+  broker: 7772
+  poller: 7771
+  reactionner: 7769
+  receiver: 7763
+  scheduler: 7768
