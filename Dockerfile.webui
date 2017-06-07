@@ -7,6 +7,5 @@ RUN apk del build-base linux-headers
 
 USER alignak
 
-#COPY alignakbackend.py alignakbackend.py
 STOPSIGNAL TERM
 ENTRYPOINT ["alignak-webui-uwsgi"]

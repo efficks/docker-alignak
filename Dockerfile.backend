@@ -1,11 +1,15 @@
 FROM python:2.7-alpine
 
-RUN apk add --update-cache build-base linux-headers
-RUN pip install alignak-backend
-RUN apk del build-base linux-headers
-RUN adduser -S -H -D alignak
+
+RUN apk add --update-cache build-base linux-headers nginx supervisor && \
+    pip install alignak-backend && \
+    apk del build-base linux-headers && \
+    adduser -S -H -D alignak
 
 USER alignak
 
+COPY supervisord.conf supervisord.conf
+
 COPY alignakbackend.py alignakbackend.py
-ENTRYPOINT ["uwsgi", "-s", "/tmp/uwsgi.sock", "-w", "alignakbackend:app", "--enable-threads", "-p", "4"]
+EXPOSE 5000
+ENTRYPOINT ["/usr/bin/supervisord", "--nodaemon", "--configuration", "supervisord.conf", "--logfile", "/dev/stdout", "--logfile_maxbytes", "0"]

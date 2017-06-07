@@ -73,6 +73,17 @@ services:
     volumes:
       - /opt/alignak/backend/settings.json:/usr/local/etc/alignak-backend/settings.json
 
+  alignak-webui:
+    container_name: alignak-webui
+    image: alignak-webui
+    hostname: alignak-webui
+    depends_on:
+      - alignak-backend
+    ports:
+      - 5001:5001
+    volumes:
+      - /opt/alignak-webui/settings.cfg:/usr/local/etc/alignak-webui/settings.cfg
+
   mongo:
     container_name: mongo
     image: mongo:latest
